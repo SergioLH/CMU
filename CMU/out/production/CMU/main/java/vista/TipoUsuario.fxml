@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="457.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.TipoUsuarioController">
+   <top>
+      <Label text="Tipo" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="35.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="40.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXButton fx:id="botonResidente" onAction="#botonResidente" styleClass="button-raised" text="Residente" />
+            <JFXButton fx:id="botonTrabajador" onAction="#botonTrabajador" styleClass="button-raised" text="Trabajador" GridPane.rowIndex="1" />
+            <JFXButton fx:id="botonInvitado" onAction="#botonInvitado" styleClass="button-raised" text="Invitado" GridPane.rowIndex="2" />
+            <JFXButton fx:id="botonVolverMenu" onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" GridPane.rowIndex="3" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="25.0" />
+         </BorderPane.margin>
+      </GridPane>
+   </center>
+</BorderPane>
