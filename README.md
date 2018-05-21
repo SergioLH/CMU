@@ -1,2 +1,2 @@
 # CMU
-Parte del proyecto de la asignatura proyecto sorf
+Proyecto de la asignatura proyecto software
