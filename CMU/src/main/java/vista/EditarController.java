@@ -44,9 +44,41 @@ public class EditarController {
     @FXML
     private JFXTextField campoSueldo;
 
+    private String tipo;
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+        CargarTipoUsuario();
+    }
+
+    private void CargarTipoUsuario() {
+        switch (this.tipo) {
+            case "Residente":
+                campoRol.setVisible(false);
+                campoSueldo.setVisible(false);
+                break;
+            case "Invitado":
+                campoTelefono.setVisible(false);
+                campoDireccion.setVisible(false);
+                campoTipoAlojamiento.setVisible(false);
+                campoRol.setVisible(false);
+                campoSueldo.setVisible(false);
+                break;
+            case "Trabajador":
+                campoTelefono.setVisible(false);
+                campoDireccion.setVisible(false);
+                campoTipoAlojamiento.setVisible(false);
+                break;
+        }
+    }
+
     @FXML
     private void initialize() {
-
+        campoTelefono.managedProperty().bindBidirectional(campoTelefono.visibleProperty());
+        campoDireccion.managedProperty().bindBidirectional(campoDireccion.visibleProperty());
+        campoTipoAlojamiento.managedProperty().bindBidirectional(campoTipoAlojamiento.visibleProperty());
+        campoRol.managedProperty().bindBidirectional(campoRol.visibleProperty());
+        campoSueldo.managedProperty().bindBidirectional(campoSueldo.visibleProperty());
     }
 
     @FXML
@@ -55,7 +87,7 @@ public class EditarController {
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                editarResidente();
+                editar();
                 Stage ventana = MainApp.primaryStage;
                 Platform.runLater(() -> {
                     Scene escena = ventana.getScene();
@@ -70,10 +102,13 @@ public class EditarController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
-    private void editarResidente() {
+    private void editar() {
         final String dni = campoDNI.getText();
         final String nombre = campoNombre.getText();
         final String apellidos = campoApellidos.getText();
@@ -83,7 +118,6 @@ public class EditarController {
         final String rol = campoRol.getText();
         final String sueldo = campoSueldo.getText();
 
-        //METODO DE AÑADIR INVITADO -> SUPONGO QUE SERA HACER EL JSON PARA PASAR EL INVITADO AL SERVER?
     }
 
     @FXML
@@ -105,6 +139,9 @@ public class EditarController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 }

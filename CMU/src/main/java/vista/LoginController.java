@@ -14,8 +14,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author Seryak
@@ -42,29 +47,61 @@ public class LoginController {
             @Override
             protected Void call() throws Exception {
                 logearse();
-                Stage ventana = MainApp.primaryStage;
-                Platform.runLater(() -> {
-                    Scene escena = ventana.getScene();
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(MainApp.class.getResource("MenuEncargado.fxml"));
-                    try {
-                        escena.setRoot(loader.load());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                if (logearse() == true) {
+                    Stage ventana = MainApp.primaryStage;
+                    Platform.runLater(() -> {
+                        Scene escena = ventana.getScene();
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("MenuEncargado.fxml"));
+                        try {
+                            escena.setRoot(loader.load());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
-    private void logearse() {
+    private boolean logearse() throws IOException {
         final String id = campoID.getText();
         final String contraseña = campoContraseña.getText();
 
-        //METODO PARA LOGEARSE EN EL SERVIDOR.
+        if (!(campoID.getText().isEmpty()) && !(campoContraseña.getText().isEmpty())) {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/login");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            System.out.println(jsonObject.get("mensaje"));
+            connection.disconnect();
+            return true;
+
+        } else {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            System.out.println(jsonObject.get("mensaje"));
+            connection.disconnect();
+            return false;
+        }
     }
-
-
 }

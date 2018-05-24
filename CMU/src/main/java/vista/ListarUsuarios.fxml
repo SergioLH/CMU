@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="484.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.ListarUsuariosController">
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.ListarUsuariosController">
    <top>
       <Label text="Listar Usuarios" BorderPane.alignment="CENTER">
          <font>
@@ -23,12 +23,12 @@
       </Label>
    </top>
    <center>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tablaListarUsuario" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn prefWidth="75.0" text="DNI" />
-            <TableColumn prefWidth="83.0" text="Nombre" />
-            <TableColumn minWidth="9.0" prefWidth="67.0" text="Apellidos" />
-            <TableColumn prefWidth="75.0" text="Tipo" />
+            <TableColumn fx:id="columnaDNI" prefWidth="75.0" text="DNI" />
+            <TableColumn fx:id="columnaNombre" prefWidth="83.0" text="Nombre" />
+            <TableColumn fx:id="columnaApellidos" minWidth="9.0" prefWidth="67.0" text="Apellidos" />
+            <TableColumn fx:id="columnaTipo" prefWidth="75.0" text="Tipo Usuario" />
          </columns>
          <BorderPane.margin>
             <Insets bottom="15.0" left="40.0" right="40.0" />
@@ -50,18 +50,18 @@
             <RowConstraints vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXButton styleClass="button-raised" text="Crear Factura">
+            <JFXButton fx:id="botonCrearFactura" onAction="#botonCrearFactura" styleClass="button-raised" text="Crear Factura">
                <GridPane.margin>
                   <Insets right="15.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton styleClass="button-raised" text="Eliminar" GridPane.columnIndex="2">
+            <JFXButton fx:id="botonEliminar" onAction="#botonEliminar" styleClass="button-raised" text="Eliminar" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets left="15.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="botonEditar" styleClass="button-raised" text="Editar" GridPane.columnIndex="1" />
-            <JFXButton onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXButton fx:id="botonEditar" onAction="#botonEditar" styleClass="button-raised" text="Editar" GridPane.columnIndex="1" />
+            <JFXButton fx:id="botonVolverMenu" onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets top="15.0" />
                </GridPane.margin>

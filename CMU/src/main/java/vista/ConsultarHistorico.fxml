@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="441.0" prefWidth="612.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.ConsultarHistoricoController">
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.ConsultarHistoricoController">
    <top>
       <Label text="Consultar Historico" BorderPane.alignment="CENTER">
          <font>
@@ -22,11 +22,11 @@
       </Label>
    </top>
    <center>
-      <TableView prefHeight="335.0" prefWidth="224.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tablaListarHistorico" prefHeight="335.0" prefWidth="224.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn prefWidth="114.0" text="DNI" />
-            <TableColumn prefWidth="122.0" text="Lugar" />
-            <TableColumn prefWidth="158.0" text="Fecha" />
+            <TableColumn fx:id="columnaDNI" prefWidth="114.0" text="DNI" />
+            <TableColumn fx:id="columnaLugar" prefWidth="122.0" text="Lugar" />
+            <TableColumn fx:id="columnaFecha" prefWidth="158.0" text="Fecha" />
          </columns>
          <BorderPane.margin>
             <Insets bottom="15.0" left="35.0" right="20.0" top="15.0" />
@@ -41,7 +41,7 @@
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="127.0" VBox.vgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="botonFacturar" onAction="#botonFacturar" styleClass="button-raised" text="Facturar">
+                  <JFXButton fx:id="botonImprimir" onAction="#botonImprimir" styleClass="button-raised" text="Imprimir">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

@@ -2,13 +2,23 @@ package main.java.vista;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import main.java.cmu.Usuario;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 @SuppressWarnings("ALL")
@@ -26,130 +36,121 @@ public class ListarUsuariosController {
     @FXML
     private JFXButton botonVolverMenu;
 
-    /*
-        @FXML
-        TableView<Lista> tablaListar;
-
-        @FXML
-        TableColumn<Lista, String> columnaDNI;
-
-        @FXML
-        TableColumn<Lista, String> columnaNombre;
-
-        @FXML
-        TableColumn<Lista, String> columnaApellidos;
-
-        @FXML
-        TableColumn<Lista, String> columnaTipo;
-    */
     @FXML
-    private void initialize() {/*
-        columnaDNI.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getDNI()));
-        columnaNombre.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNombre()));
-        columnaApellidos.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getApellidos()));
-        columnaTipo.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTipo()));
-        actualizarLista();*/
+    TableView<Usuario> tablaListarUsuario;
+
+    @FXML
+    TableColumn<Usuario, String> columnaDNI;
+
+    @FXML
+    TableColumn<Usuario, String> columnaNombre;
+
+    @FXML
+    TableColumn<Usuario, String> columnaApellidos;
+
+    @FXML
+    TableColumn<Usuario, String> columnaTipo;
+
+    private ObservableList<Usuario> data = FXCollections.observableArrayList(
+            new Usuario("258933", "John", "Smith", "Anual"
+                    , "Residente", "123456789", "C/Amapolas", ""),
+            new Usuario("2258933", "Peter", "Smith", ""
+                    , "Trabajador", "123456789", "C/Amapolas", "1500.22")
+    );
+
+    @FXML
+    private void initialize() {
+        columnaDNI.setCellValueFactory(celda -> celda.getValue().dniProperty());
+        columnaNombre.setCellValueFactory(celda -> celda.getValue().nombreProperty());
+        columnaApellidos.setCellValueFactory(celda -> celda.getValue().apellidosProperty());
+        columnaTipo.setCellValueFactory(celda -> celda.getValue().tipoUsuarioProperty());
+        tablaListarUsuario.setItems(data);
     }
 
-    /*
-        @FXML
-        private void botonEditar() {
-            String tipo;
-            if (tipo = Invitado) {
-                Task<Void> tarea = new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        Stage ventana = MainApp.primaryStage;
-                        Platform.runLater(() -> {
-                            Scene escena = ventana.getScene();
-                            FXMLLoader loader = new FXMLLoader();
-                            loader.setLocation(MainApp.class.getResource("EditarInvitado.fxml"));
-                            try {
-                                escena.setRoot(loader.load());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                        return null;
-                    }
-                };
-                new Thread(tarea).start();
-            } else if (tipo = Residente) {
-                Task<Void> tarea = new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        Stage ventana = MainApp.primaryStage;
-                        Platform.runLater(() -> {
-                            Scene escena = ventana.getScene();
-                            FXMLLoader loader = new FXMLLoader();
-                            loader.setLocation(MainApp.class.getResource("EditarResidente.fxml"));
-                            try {
-                                escena.setRoot(loader.load());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                        return null;
-                    }
-                };
-                new Thread(tarea).start();
-            } else {
-                Task<Void> tarea = new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        Stage ventana = MainApp.primaryStage;
-                        Platform.runLater(() -> {
-                            Scene escena = ventana.getScene();
-                            FXMLLoader loader = new FXMLLoader();
-                            loader.setLocation(MainApp.class.getResource("EditarTrabajador.fxml"));
-                            try {
-                                escena.setRoot(loader.load());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                        return null;
-                    }
-                };
-                new Thread(tarea).start();
-            }
-        }
+    @FXML
+    private void botonEditar() {
 
-        @FXML
-        private void botonEliminar() {
-            try {
-                Lista lista = this.tablaListar.getSelectionModel().getSelectedItem();
-                Task<Void> tarea = new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        eliminarUsuario();
-                        actualizarLista();
-                        return null;
-                    }
-                };
-                new Thread(tarea).start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        Task<Void> tarea = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                editar();
 
-        private void actualizarLista() {
-            Task<Void> tarea = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    tablaListar.getItems().clear();
-                    tablaListar.setItems(FXCollections.observableArrayList();
-                    return null;
+                return null;
+            }
+        };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
+        new Thread(tarea).start();
+    }
+
+    private void editar() throws IOException {
+        Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
+        if (usuario != null) {
+
+            Stage ventana = MainApp.primaryStage;
+            Platform.runLater(() -> {
+                Scene escena = ventana.getScene();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainApp.class.getResource("Editar.fxml"));
+                Usuario seleccionado = tablaListarUsuario.getSelectionModel().getSelectedItem();
+
+                try {
+                    escena.setRoot(loader.load());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            };
-            new Thread(tarea).start();
-        }
+            });
+        } else {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
 
-        @FXML
-        private void botonCrearFactura() {
-
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            System.out.println(jsonObject.get("mensaje"));
+            connection.disconnect();
         }
-    */
+    }
+
+    @FXML
+    private void botonEliminar() throws IOException {
+        Task<Void> tarea = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                eliminar();
+                Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
+                tablaListarUsuario.getItems().remove(usuario);
+                return null;
+            }
+        };
+        new Thread(tarea).start();
+    }
+
+    private void eliminar() throws IOException {
+        URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/UsuarioEliminado");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept", "application/json");
+
+        if (connection.getResponseCode() != 200) {
+            throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+        }
+        JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+        JSONObject jsonObject = new JSONObject(jsonTokener);
+        System.out.println(jsonObject.get("mensaje"));
+        connection.disconnect();
+    }
+
+    @FXML
+    private void botonCrearFactura() {
+
+    }
+
     @FXML
     private void botonVolverMenu() {
         Task<Void> tarea = new Task<Void>() {
@@ -169,6 +170,10 @@ public class ListarUsuariosController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 }
+

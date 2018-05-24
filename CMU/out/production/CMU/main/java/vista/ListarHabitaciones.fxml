@@ -11,25 +11,25 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="526.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.ListarHabitacionesController">
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.ListarHabitacionesController">
    <top>
       <Label text="Listar Habitaciones" BorderPane.alignment="CENTER">
          <font>
             <Font size="30.0" />
          </font>
          <BorderPane.margin>
-            <Insets top="20.0" />
+            <Insets bottom="10.0" top="20.0" />
          </BorderPane.margin>
       </Label>
    </top>
    <center>
-      <TableView prefHeight="318.0" prefWidth="574.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tablaListarHabitacion" prefHeight="318.0" prefWidth="574.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn minWidth="-1.0" text="DNI" />
-            <TableColumn minWidth="-1.0" prefWidth="145.0" text="Nombre" />
-            <TableColumn maxWidth="189.0" minWidth="83.0" prefWidth="124.0" text="Apellidos" />
-            <TableColumn minWidth="0.0" prefWidth="117.0" text="Numero" />
-            <TableColumn minWidth="-1.0" prefWidth="133.0" text="Piso" />
+            <TableColumn fx:id="columnaDNI" minWidth="-1.0" text="DNI" />
+            <TableColumn fx:id="columnaNombre" minWidth="-1.0" prefWidth="145.0" text="Nombre" />
+            <TableColumn fx:id="columnaApellidos" maxWidth="189.0" minWidth="83.0" prefWidth="124.0" text="Apellidos" />
+            <TableColumn fx:id="columnaNumero" minWidth="0.0" prefWidth="117.0" text="Numero" />
+            <TableColumn fx:id="columnaPiso" minWidth="-1.0" prefWidth="133.0" text="Piso" />
          </columns>
          <BorderPane.margin>
             <Insets bottom="15.0" left="40.0" right="40.0" />

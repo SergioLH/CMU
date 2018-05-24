@@ -31,7 +31,6 @@ public class PortadaController {
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                conectar();
                 Stage ventana = MainApp.primaryStage;
                 Platform.runLater(() -> {
                     Scene escena = ventana.getScene();
@@ -47,9 +46,10 @@ public class PortadaController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
-
-    private void conectar() {
-    }
 }
+

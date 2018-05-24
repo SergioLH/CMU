@@ -5,11 +5,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.RegistrarController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.RegistrarController">
    <top>
       <Label text="Registrar" BorderPane.alignment="CENTER">
          <font>
@@ -21,9 +24,9 @@
       </Label>
    </top>
    <center>
-      <HBox maxWidth="300.0" BorderPane.alignment="CENTER">
+      <HBox maxWidth="350.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <VBox prefHeight="435.0" prefWidth="321.0" HBox.hgrow="ALWAYS">
                <children>
                   <JFXTextField fx:id="campoDNI" promptText="DNI">
                      <font>
@@ -86,25 +89,39 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </JFXTextField>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </VBox>
          </children>
+         <BorderPane.margin>
+            <Insets top="25.0" />
+         </BorderPane.margin>
       </HBox>
    </center>
    <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <GridPane prefHeight="30.0" prefWidth="559.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <JFXButton fx:id="botonVolverMenu" onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <JFXButton fx:id="botonRegistrar" onAction="#botonRegistrar" styleClass="button-raised" text="Registrar" />
-               </children>
-            </VBox>
+            <JFXButton fx:id="botonVolverMenu" onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" />
+            <JFXButton fx:id="botonRegistrar" onAction="#botonRegistrar" styleClass="button-raised" text="Registrar" GridPane.columnIndex="1" />
          </children>
-      </HBox>
+         <BorderPane.margin>
+            <Insets bottom="65.0" />
+         </BorderPane.margin>
+      </GridPane>
    </bottom>
 </BorderPane>

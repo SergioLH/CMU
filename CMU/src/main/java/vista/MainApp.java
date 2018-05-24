@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
  * @author Seryak
  */
 public class MainApp extends Application {
@@ -33,15 +32,12 @@ public class MainApp extends Application {
     private void showPortada() {
         Stage ventana = MainApp.primaryStage;
         FXMLLoader loader = new FXMLLoader();
-
         loader.setLocation(MainApp.class.getResource("Portada.fxml"));
-
         Scene escena = null;
         try {
             escena = new Scene(loader.load());
-
-            escena.getStylesheets().add(getClass().getResource("..\\..\\resources\\css\\estilo.css").toExternalForm());
-
+            escena.getStylesheets().add(getClass().getResource("../../resources/css/estilo.css").toExternalForm());
+            // escena.getStylesheets().add(getClass().getResource("../../resources/css/estilo.css").toString());
             MainApp.primaryStage.setScene(escena);
         } catch (Exception e) {
             e.printStackTrace();

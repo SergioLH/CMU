@@ -62,6 +62,9 @@ public class MenuEncargadoController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
@@ -84,6 +87,9 @@ public class MenuEncargadoController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
@@ -106,6 +112,9 @@ public class MenuEncargadoController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
@@ -128,6 +137,9 @@ public class MenuEncargadoController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
@@ -136,7 +148,6 @@ public class MenuEncargadoController {
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                salir();
                 Stage ventana = MainApp.primaryStage;
                 Platform.runLater(() -> {
                     Scene escena = ventana.getScene();
@@ -151,6 +162,9 @@ public class MenuEncargadoController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
 
     }
@@ -174,10 +188,10 @@ public class MenuEncargadoController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
-    }
-
-    private void salir() {
     }
 }
 

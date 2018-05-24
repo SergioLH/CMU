@@ -6,6 +6,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,7 +42,10 @@ public class TipoUsuarioController {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(MainApp.class.getResource("Registrar.fxml"));
                     try {
-                        escena.setRoot(loader.load());
+                        Pane p = loader.load();
+                        RegistrarController controlador = loader.getController();
+                        controlador.setTipo("Residente");
+                        escena.setRoot(p);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -49,6 +53,9 @@ public class TipoUsuarioController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
@@ -64,7 +71,10 @@ public class TipoUsuarioController {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(MainApp.class.getResource("Registrar.fxml"));
                     try {
-                        escena.setRoot(loader.load());
+                        Pane p = loader.load();
+                        RegistrarController controlador = loader.getController();
+                        controlador.setTipo("Trabajador");
+                        escena.setRoot(p);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -72,6 +82,9 @@ public class TipoUsuarioController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
@@ -86,7 +99,10 @@ public class TipoUsuarioController {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(MainApp.class.getResource("Registrar.fxml"));
                     try {
-                        escena.setRoot(loader.load());
+                        Pane p = loader.load();
+                        RegistrarController controlador = loader.getController();
+                        controlador.setTipo("Invitado");
+                        escena.setRoot(p);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -94,6 +110,9 @@ public class TipoUsuarioController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 
@@ -116,6 +135,9 @@ public class TipoUsuarioController {
                 return null;
             }
         };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(tarea).start();
     }
 }
