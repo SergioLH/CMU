@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import main.java.cmu.Usuario;
 import org.json.JSONObject;
@@ -52,11 +53,13 @@ public class ListarUsuariosController {
     TableColumn<Usuario, String> columnaTipo;
 
     private ObservableList<Usuario> data = FXCollections.observableArrayList(
-            new Usuario("258933", "John", "Smith", "Anual"
-                    , "Residente", "123456789", "C/Amapolas", ""),
-            new Usuario("2258933", "Peter", "Smith", ""
-                    , "Trabajador", "123456789", "C/Amapolas", "1500.22")
+
     );
+
+    public void setData(ObservableList<Usuario> data) {
+        this.data = data;
+        tablaListarUsuario.setItems(data);
+    }
 
     @FXML
     private void initialize() {
@@ -69,12 +72,10 @@ public class ListarUsuariosController {
 
     @FXML
     private void botonEditar() {
-
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 editar();
-
                 return null;
             }
         };
@@ -87,16 +88,17 @@ public class ListarUsuariosController {
     private void editar() throws IOException {
         Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
         if (usuario != null) {
-
             Stage ventana = MainApp.primaryStage;
             Platform.runLater(() -> {
                 Scene escena = ventana.getScene();
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainApp.class.getResource("Editar.fxml"));
                 Usuario seleccionado = tablaListarUsuario.getSelectionModel().getSelectedItem();
-
                 try {
-                    escena.setRoot(loader.load());
+                    Pane p = loader.load();
+                    EditarController controlador = loader.getController();
+                    controlador.setTipo(seleccionado.getTipoUsuario());
+                    escena.setRoot(p);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -132,23 +134,87 @@ public class ListarUsuariosController {
     }
 
     private void eliminar() throws IOException {
-        URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/UsuarioEliminado");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Accept", "application/json");
+        Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
+        int idEliminar = usuario.getId();
+        if (usuario == null) {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
 
-        if (connection.getResponseCode() != 200) {
-            throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            System.out.println(jsonObject.get("mensaje"));
+            connection.disconnect();
+
+        } else {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/ListaUsuarios/" + idEliminar);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("Accept", "application/json");
+
+            if (connection.getResponseCode() == 200) {
+                System.out.println("OK");
+            } else {
+                System.out.println(connection.getResponseCode());
+                System.out.println("ERROR");
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            connection.disconnect();
         }
-        JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-        JSONObject jsonObject = new JSONObject(jsonTokener);
-        System.out.println(jsonObject.get("mensaje"));
-        connection.disconnect();
     }
 
     @FXML
     private void botonCrearFactura() {
+        Task<Void> tarea = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                crearFactura();
+                return null;
+            }
+        };
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
+        tarea.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
+        new Thread(tarea).start();
+    }
 
+    private void crearFactura() throws IOException {
+        Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
+        if (usuario != null) {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/FacturaCreada");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            System.out.println(jsonObject.get("mensaje"));
+            connection.disconnect();
+        } else {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            System.out.println(jsonObject.get("mensaje"));
+            connection.disconnect();
+        }
     }
 
     @FXML

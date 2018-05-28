@@ -61,7 +61,6 @@ public class TipoUsuarioController {
 
     @FXML
     private void botonTrabajador() {
-
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
