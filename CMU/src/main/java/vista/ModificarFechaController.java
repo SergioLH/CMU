@@ -35,7 +35,6 @@ public class ModificarFechaController {
 
     @FXML
     private void initialize() {
-
     }
 
     @FXML
@@ -73,6 +72,7 @@ public class ModificarFechaController {
 
         if (!(campoTarjeta.getText().isEmpty()) && !(campoNuevaFecha.getValue().isBefore(LocalDate.now()))) {
             URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/FechaModificada");
+            //URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io//tarjetas");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");

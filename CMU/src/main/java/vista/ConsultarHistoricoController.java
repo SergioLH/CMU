@@ -33,7 +33,7 @@ public class ConsultarHistoricoController {
     TableView<Historico> tablaListarHistorico;
 
     @FXML
-    TableColumn<Historico, String> columnaDNI;
+    TableColumn<Historico, String> columnanumeroTarjeta;
 
     @FXML
     TableColumn<Historico, String> columnaLugar;
@@ -42,13 +42,18 @@ public class ConsultarHistoricoController {
     TableColumn<Historico, String> columnaFecha;
 
     private ObservableList<Historico> data = FXCollections.observableArrayList(
-            new Historico("123456", "Gimmasio", "14/11/2017"),
-            new Historico("258963", "Comedor", "24/05/2018")
+          /*  new Historico("123456", "Gimmasio", "14/11/2017"),
+            new Historico("258963", "Comedor", "24/05/2018")*/
     );
+
+    public void setData(ObservableList<Historico> data) {
+        this.data = data;
+        tablaListarHistorico.setItems(data);
+    }
 
     @FXML
     private void initialize() {
-        columnaDNI.setCellValueFactory(celda -> celda.getValue().dniProperty());
+        columnanumeroTarjeta.setCellValueFactory(celda -> celda.getValue().numeroTarjetaProperty());
         columnaFecha.setCellValueFactory(celda -> celda.getValue().fechaProperty());
         columnaLugar.setCellValueFactory(celda -> celda.getValue().lugarProperty());
         tablaListarHistorico.setItems(data);
@@ -87,9 +92,7 @@ public class ConsultarHistoricoController {
             JSONObject jsonObject = new JSONObject(jsonTokener);
             System.out.println(jsonObject.get("mensaje"));
             connection.disconnect();
-        }
-
-        else{
+        } else {
             URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -103,7 +106,6 @@ public class ConsultarHistoricoController {
             System.out.println(jsonObject.get("mensaje"));
             connection.disconnect();
         }
-
     }
 
     @FXML

@@ -25,7 +25,7 @@
    <center>
       <TableView fx:id="tablaListarHabitacion" prefHeight="318.0" prefWidth="574.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn fx:id="columnaDNI" minWidth="-1.0" text="DNI" />
+            <TableColumn fx:id="columnaNumeroTarjeta" minWidth="-1.0" text="Numero Tarjeta" />
             <TableColumn fx:id="columnaNombre" minWidth="-1.0" prefWidth="145.0" text="Nombre" />
             <TableColumn fx:id="columnaApellidos" maxWidth="189.0" minWidth="83.0" prefWidth="124.0" text="Apellidos" />
             <TableColumn fx:id="columnaNumero" minWidth="0.0" prefWidth="117.0" text="Numero" />

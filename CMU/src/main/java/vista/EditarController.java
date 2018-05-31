@@ -8,8 +8,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @SuppressWarnings("ALL")
 public class EditarController {
@@ -83,22 +88,22 @@ public class EditarController {
 
     @FXML
     private void botonEditar() {
-
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                editar();
-                Stage ventana = MainApp.primaryStage;
-                Platform.runLater(() -> {
-                    Scene escena = ventana.getScene();
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(MainApp.class.getResource("ListarUsuarios.fxml"));
-                    try {
-                        escena.setRoot(loader.load());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                if (editar()) {
+                    Stage ventana = MainApp.primaryStage;
+                    Platform.runLater(() -> {
+                        Scene escena = ventana.getScene();
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("MenuEncargado.fxml"));
+                        try {
+                            escena.setRoot(loader.load());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
                 return null;
             }
         };
@@ -108,7 +113,7 @@ public class EditarController {
         new Thread(tarea).start();
     }
 
-    private void editar() {
+    private boolean editar() throws IOException {
         final String dni = campoDNI.getText();
         final String nombre = campoNombre.getText();
         final String apellidos = campoApellidos.getText();
@@ -118,6 +123,106 @@ public class EditarController {
         final String rol = campoRol.getText();
         final String sueldo = campoSueldo.getText();
 
+        if (tipo.equals("Residente")) {
+            if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
+                    && !(campoApellidos.getText().isEmpty()) && !(campoTelefono.getText().isEmpty())
+                    && !(campoDireccion.getText().isEmpty()) && !(campoTipoAlojamiento.getText().isEmpty())) {
+
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/EditarCompleto");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                System.out.println(jsonObject.get("mensaje"));
+                connection.disconnect();
+                return true;
+            } else {
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                System.out.println(jsonObject.get("mensaje"));
+                connection.disconnect();
+                return false;
+            }
+        } else if (tipo.equals("Trabajador")) {
+            if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
+                    && !(campoApellidos.getText().isEmpty()) && !(campoRol.getText().isEmpty())
+                    && !(campoSueldo.getText().isEmpty())) {
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/EditarCompleto");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                System.out.println(jsonObject.get("mensaje"));
+                connection.disconnect();
+                return true;
+            } else {
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                System.out.println(jsonObject.get("mensaje"));
+                connection.disconnect();
+                return false;
+            }
+        } else if (tipo.equals("Invitado")) {
+            System.out.println("prueba");
+            if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
+                    && !(campoApellidos.getText().isEmpty())) {
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/EditarCompleto");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                System.out.println(jsonObject.get("mensaje"));
+                connection.disconnect();
+                return true;
+            } else {
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                System.out.println(jsonObject.get("mensaje"));
+                connection.disconnect();
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     @FXML

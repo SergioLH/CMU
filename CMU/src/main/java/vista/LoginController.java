@@ -46,8 +46,7 @@ public class LoginController {
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                logearse();
-                if (logearse() == true) {
+                if (logearse()) {
                     Stage ventana = MainApp.primaryStage;
                     Platform.runLater(() -> {
                         Scene escena = ventana.getScene();
@@ -89,18 +88,7 @@ public class LoginController {
             return true;
 
         } else {
-            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Accept", "application/json");
-
-            if (connection.getResponseCode() != 200) {
-                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-            }
-            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-            JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
-            connection.disconnect();
+            System.out.println("Error");
             return false;
         }
     }

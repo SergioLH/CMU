@@ -65,7 +65,6 @@ public class RegistrarController {
     }
 
     private void CargarTipoUsuario() {
-
         switch (this.tipo) {
             case "Residente":
                 campoRol.setVisible(false);
@@ -96,13 +95,11 @@ public class RegistrarController {
     }
 
     @FXML
-    private void botonRegistrar() throws IOException {
-        registrar();
+    private void botonRegistrar() {
         Task<Void> tarea = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                registrar();
-                if (registrar() == true) {
+                if (registrar()) {
                     Stage ventana = MainApp.primaryStage;
                     Platform.runLater(() -> {
                         Scene escena = ventana.getScene();
@@ -134,99 +131,74 @@ public class RegistrarController {
         final String rol = campoRol.getText();
         final String sueldo = campoSueldo.getText();
 
-        if (tipo == "Residente") {
+        if (tipo.equals("Residente")) {
             if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
                     && !(campoApellidos.getText().isEmpty()) && !(campoTelefono.getText().isEmpty())
                     && !(campoDireccion.getText().isEmpty()) && !(campoTipoAlojamiento.getText().isEmpty())) {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/RegistroCompleto");
+
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/ListaUsuarios");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
+                connection.setRequestMethod("POST");
                 connection.setRequestProperty("Accept", "application/json");
 
-                if (connection.getResponseCode() != 200) {
+                if (connection.getResponseCode() == 201) {
+                    System.out.println("Registro Completo");
+                } else {
+                    System.out.println("Error en la conexion");
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
+
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
                 JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
                 connection.disconnect();
                 return true;
             } else {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
-
-                if (connection.getResponseCode() != 200) {
-                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-                }
-                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-                JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
-                connection.disconnect();
+                System.out.println("Error en la creacion");
                 return false;
             }
-        } else if (tipo == "Trabajador") {
+        } else if (tipo.equals("Trabajador")) {
             if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
                     && !(campoApellidos.getText().isEmpty()) && !(campoRol.getText().isEmpty())
                     && !(campoSueldo.getText().isEmpty())) {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/RegistroCompleto");
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/ListaUsuarios");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
+                connection.setRequestMethod("POST");
                 connection.setRequestProperty("Accept", "application/json");
 
-                if (connection.getResponseCode() != 200) {
+                if (connection.getResponseCode() == 201) {
+                    System.out.println("Registro Completo");
+                } else {
+                    System.out.println("Error en la conexion");
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
                 JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
                 connection.disconnect();
                 return true;
             } else {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
-
-                if (connection.getResponseCode() != 200) {
-                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-                }
-                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-                JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
-                connection.disconnect();
+                System.out.println("Error en la creacion");
                 return false;
             }
-        } else if (tipo == "Invitado") {
+        } else if (tipo.equals("Invitado")) {
             if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
                     && !(campoApellidos.getText().isEmpty())) {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/RegistroCompleto");
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/ListaUsuarios");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
+                connection.setRequestMethod("POST");
                 connection.setRequestProperty("Accept", "application/json");
 
-                if (connection.getResponseCode() != 200) {
+                if (connection.getResponseCode() == 201) {
+                    System.out.println("Registro Completo");
+                } else {
+                    System.out.println("Error en la conexion");
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
                 JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
                 connection.disconnect();
                 return true;
             } else {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
-
-                if (connection.getResponseCode() != 200) {
-                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-                }
-                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-                JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
-                connection.disconnect();
+                System.out.println("Error en la creacion");
                 return false;
             }
         } else {

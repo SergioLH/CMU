@@ -24,7 +24,7 @@
    <center>
       <TableView fx:id="tablaListarHistorico" prefHeight="335.0" prefWidth="224.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn fx:id="columnaDNI" prefWidth="114.0" text="DNI" />
+            <TableColumn fx:id="columnanumeroTarjeta" prefWidth="114.0" text="Numero Tarjeta" />
             <TableColumn fx:id="columnaLugar" prefWidth="122.0" text="Lugar" />
             <TableColumn fx:id="columnaFecha" prefWidth="158.0" text="Fecha" />
          </columns>

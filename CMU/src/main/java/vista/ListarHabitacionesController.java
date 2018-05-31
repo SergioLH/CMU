@@ -33,7 +33,7 @@ public class ListarHabitacionesController {
     TableView<Habitacion> tablaListarHabitacion;
 
     @FXML
-    TableColumn<Habitacion, String> columnaDNI;
+    TableColumn<Habitacion, String> columnaNumeroTarjeta;
 
     @FXML
     TableColumn<Habitacion, String> columnaNombre;
@@ -47,14 +47,19 @@ public class ListarHabitacionesController {
     @FXML
     TableColumn<Habitacion, String> columnaPiso;
 
-    private final ObservableList<Habitacion> data = FXCollections.observableArrayList(
-            new Habitacion("123456", "John", "Smith", "2", "29"),
-            new Habitacion("213352", "David", "Zayas", "3", "29")
+    private ObservableList<Habitacion> data = FXCollections.observableArrayList(
+            /*new Habitacion("123456", "John", "Smith", "2", "29"),
+            new Habitacion("213352", "David", "Zayas", "3", "29")*/
     );
+
+    public void setData(ObservableList<Habitacion> data) {
+        this.data = data;
+        tablaListarHabitacion.setItems(data);
+    }
 
     @FXML
     private void initialize() {
-        columnaDNI.setCellValueFactory(celda -> celda.getValue().dniProperty());
+        columnaNumeroTarjeta.setCellValueFactory(celda -> celda.getValue().numeroTarjetaProperty());
         columnaNombre.setCellValueFactory(celda -> celda.getValue().nombreProperty());
         columnaApellidos.setCellValueFactory(celda -> celda.getValue().apellidosProperty());
         columnaPiso.setCellValueFactory(celda -> celda.getValue().pisoProperty());
@@ -68,6 +73,8 @@ public class ListarHabitacionesController {
             @Override
             protected Void call() throws Exception {
                 eliminar();
+                Habitacion habitacion= tablaListarHabitacion.getSelectionModel().getSelectedItem();
+                tablaListarHabitacion.getItems().remove(habitacion);
                 return null;
             }
         };
@@ -79,6 +86,38 @@ public class ListarHabitacionesController {
 
     private void eliminar() throws IOException {
         Habitacion habitacion = tablaListarHabitacion.getSelectionModel().getSelectedItem();
+        int idEliminar = habitacion.getId();
+        if (habitacion == null) {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            if (connection.getResponseCode() != 200) {
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            System.out.println(jsonObject.get("mensaje"));
+            connection.disconnect();
+
+        } else {
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/ListaHabitaciones/" + idEliminar);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("Accept", "application/json");
+
+            if (connection.getResponseCode() == 200) {
+                System.out.println("OK");
+            } else {
+                System.out.println(connection.getResponseCode());
+                System.out.println("ERROR");
+            }
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            connection.disconnect();
+        }
+        /*
         if (habitacion != null) {
             tablaListarHabitacion.getItems().remove(habitacion);
             URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/HabitacionEliminada");
@@ -106,8 +145,7 @@ public class ListarHabitacionesController {
             JSONObject jsonObject = new JSONObject(jsonTokener);
             System.out.println(jsonObject.get("mensaje"));
             connection.disconnect();
-        }
-
+        }*/
     }
 
     @FXML
