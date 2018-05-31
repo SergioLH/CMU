@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controlador.EditarController">
+   <top>
+      <Label text="Editar" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="30.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <center>
+      <HBox maxWidth="300.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <JFXTextField fx:id="campoDNI" promptText="DNI">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="campoNombre" promptText="Nombre">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="campoApellidos" promptText="Apellidos">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="campoTelefono" promptText="Telefono">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="campoDireccion" promptText="Direccion">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="campoTipoAlojamiento" promptText="Tipo Alojamiento">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="campoRol" promptText="Rol">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="campoSueldo" promptText="Sueldo">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets top="30.0" />
+         </BorderPane.margin>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <JFXButton fx:id="botonVolverMenu" onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <JFXButton fx:id="botonEditar" onAction="#botonEditar" styleClass="button-raised" text="Editar" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
