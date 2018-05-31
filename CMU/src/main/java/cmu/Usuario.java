@@ -1,20 +1,24 @@
 package main.java.cmu;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Usuario {
+    private IntegerProperty id;
     private StringProperty dni;
     private StringProperty nombre;
     private StringProperty apellidos;
     private StringProperty tipoAlojamiento;
     private StringProperty tipoUsuario;
-    private StringProperty  telefono;
+    private StringProperty telefono;
     private StringProperty direccion;
     private StringProperty sueldo;
 
-    public Usuario(String dni, String nombre, String apellidos, String tipoAlojamiento, String tipoUsuario,
+    public Usuario(int id, String dni, String nombre, String apellidos, String tipoAlojamiento, String tipoUsuario,
                    String telefono, String direccion, String sueldo) {
+        this.id = new SimpleIntegerProperty(id);
         this.dni = new SimpleStringProperty(dni);
         this.nombre = new SimpleStringProperty(nombre);
         this.apellidos = new SimpleStringProperty(apellidos);
@@ -23,6 +27,14 @@ public class Usuario {
         this.telefono = new SimpleStringProperty(telefono);
         this.direccion = new SimpleStringProperty(direccion);
         this.sueldo = new SimpleStringProperty(sueldo);
+    }
+
+    public int getId() {
+        return id.get();
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
     }
 
     public String getDni() {

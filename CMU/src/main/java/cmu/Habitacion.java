@@ -1,21 +1,33 @@
 package main.java.cmu;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Habitacion {
-    private StringProperty dni;
+    private IntegerProperty id;
+    private StringProperty numeroTarjeta;
     private StringProperty nombre;
     private StringProperty apellidos;
     private StringProperty piso;
     private StringProperty numero;
 
-    public Habitacion(String dni, String nombre, String apellido, String piso, String numero) {
+    public Habitacion(int id, String numeroTarjeta, String nombre, String apellido, String piso, String numero) {
+        this.id = new SimpleIntegerProperty(id);
         this.piso = new SimpleStringProperty(piso);
         this.numero = new SimpleStringProperty(numero);
-        this.dni = new SimpleStringProperty(dni);
+        this.numeroTarjeta = new SimpleStringProperty(numeroTarjeta);
         this.nombre = new SimpleStringProperty(nombre);
         this.apellidos = new SimpleStringProperty(apellido);
+    }
+
+    public int getId() {
+        return id.get();
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
     }
 
     public String getPiso() {
@@ -34,12 +46,12 @@ public class Habitacion {
         return numero;
     }
 
-    public String getDni() {
-        return dni.get();
+    public String getNumeroTarejta() {
+        return numeroTarjeta.get();
     }
 
-    public StringProperty dniProperty() {
-        return dni;
+    public StringProperty numeroTarjetaProperty() {
+        return numeroTarjeta;
     }
 
     public String getNombre() {

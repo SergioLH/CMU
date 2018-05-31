@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.RegistrarController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controlador.RegistrarController">
    <top>
       <Label text="Registrar" BorderPane.alignment="CENTER">
          <font>
@@ -102,7 +102,7 @@
             </VBox>
          </children>
          <BorderPane.margin>
-            <Insets top="25.0" />
+            <Insets top="30.0" />
          </BorderPane.margin>
       </HBox>
    </center>

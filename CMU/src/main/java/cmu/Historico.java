@@ -4,22 +4,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Historico {
-    private StringProperty dni;
+    private StringProperty numeroTarjeta;
     private StringProperty lugar;
     private StringProperty fecha;
 
-    public Historico(String dni, String lugar, String fecha) {
-        this.dni = new SimpleStringProperty(dni);
+    public Historico(String numeroTarjeta, String lugar, String fecha) {
+        this.numeroTarjeta = new SimpleStringProperty(numeroTarjeta);
         this.lugar = new SimpleStringProperty(lugar);
         this.fecha = new SimpleStringProperty(fecha);
     }
 
-    public String getDni() {
-        return dni.get();
+    public String getNumeroTarjeta() {
+        return numeroTarjeta.get();
     }
 
-    public StringProperty dniProperty() {
-        return dni;
+    public StringProperty numeroTarjetaProperty() {
+        return numeroTarjeta;
     }
 
     public String getLugar() {

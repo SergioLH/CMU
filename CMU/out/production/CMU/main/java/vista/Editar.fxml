@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.vista.EditarController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controlador.EditarController">
    <top>
       <Label text="Editar" BorderPane.alignment="CENTER">
          <font>
@@ -89,6 +89,9 @@
                </children>
             </VBox>
          </children>
+         <BorderPane.margin>
+            <Insets top="30.0" />
+         </BorderPane.margin>
       </HBox>
    </center>
    <bottom>
@@ -96,12 +99,12 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" />
+                  <JFXButton fx:id="botonVolverMenu" onAction="#botonVolverMenu" styleClass="button-raised" text="Menu" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton onAction="#botonEditar" styleClass="button-raised" text="Editar" />
+                  <JFXButton fx:id="botonEditar" onAction="#botonEditar" styleClass="button-raised" text="Editar" />
                </children>
             </VBox>
          </children>
