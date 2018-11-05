@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="jfoenix-8.0.4">
+    <archive path="C:/Users/Seryak/Desktop/Eclipse/2017-2018/CMU/jfoenix-8.0.4.jar" />
+  </library>
+  <library name="json-20180130">
+    <archive path="C:/Users/Seryak/Desktop/Eclipse/2017-2018/CMU/json-20180130.jar" />
+  </library>
+</eclipse-userlibraries>
+

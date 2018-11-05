@@ -4,9 +4,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Historico {
-    private StringProperty numeroTarjeta;
-    private StringProperty lugar;
-    private StringProperty fecha;
+    private final StringProperty numeroTarjeta;
+    private final StringProperty lugar;
+    private final StringProperty fecha;
 
     public Historico(String numeroTarjeta, String lugar, String fecha) {
         this.numeroTarjeta = new SimpleStringProperty(numeroTarjeta);

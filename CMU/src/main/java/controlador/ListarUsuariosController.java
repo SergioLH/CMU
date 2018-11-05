@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
@@ -20,6 +21,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static main.java.controlador.Herramientas.mensajeError;
+import static main.java.controlador.Herramientas.mensajeInformacion;
 
 
 @SuppressWarnings("ALL")
@@ -75,10 +79,12 @@ public class ListarUsuariosController {
         botonCrearFactura.setDisable(true);
 
         tablaListarUsuario.getSelectionModel().selectedItemProperty().addListener((obs, old, newSelected) -> {
-            if (newSelected.getTipoUsuario().equals("Residente")) {
-                botonCrearFactura.setDisable(false);
-            } else {
-                botonCrearFactura.setDisable(true);
+            if (newSelected != null) {
+                if (newSelected.getTipoUsuario().equals("Residente")) {
+                    botonCrearFactura.setDisable(false);
+                } else {
+                    botonCrearFactura.setDisable(true);
+                }
             }
         });
     }
@@ -121,13 +127,22 @@ public class ListarUsuariosController {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
-
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
             JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
             JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
+            mensajeError((String) jsonObject.get("mensaje"), "Para editar, debes seleccionar una fila.");
             connection.disconnect();
         }
     }
@@ -138,8 +153,6 @@ public class ListarUsuariosController {
             @Override
             protected Void call() throws Exception {
                 eliminar();
-                Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
-                tablaListarUsuario.getItems().remove(usuario);
                 return null;
             }
         };
@@ -148,35 +161,51 @@ public class ListarUsuariosController {
 
     private void eliminar() throws IOException {
         Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
-        int idEliminar = usuario.getId();
-        if (usuario == null) {
+        if (usuario != null) {
+            int idEliminar = usuario.getIdUsuario();
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/ListaUsuarios/" + idEliminar);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("Accept", "application/json");
+            if (connection.getResponseCode() == 200) {
+                tablaListarUsuario.getItems().remove(usuario);
+                mensajeInformacion("Usuario eliminado", "Usuario eliminado correctamente.");
+            } else {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+            connection.disconnect();
+        } else {
             URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
 
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
             JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
             JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
-            connection.disconnect();
-
-        } else {
-            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/ListaUsuarios/" + idEliminar);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("DELETE");
-            connection.setRequestProperty("Accept", "application/json");
-
-            if (connection.getResponseCode() == 200) {
-                System.out.println("Usuario Eliminado Correctamente.");
-            } else {
-                System.out.println(connection.getResponseCode());
-                System.out.println("ERROR");
-            }
-            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-            JSONObject jsonObject = new JSONObject(jsonTokener);
+            mensajeError((String) jsonObject.get("mensaje"), "Para eliminar, debes seleccionar una fila.");
             connection.disconnect();
         }
     }
@@ -201,7 +230,6 @@ public class ListarUsuariosController {
 
     private void crearFactura() throws IOException {
         Usuario usuario = tablaListarUsuario.getSelectionModel().getSelectedItem();
-
         if (usuario != null) {
             URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/FacturaCreada");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -209,24 +237,21 @@ public class ListarUsuariosController {
             connection.setRequestProperty("Accept", "application/json");
 
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
             JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
             JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
-            connection.disconnect();
-        } else {
-            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Accept", "application/json");
-
-            if (connection.getResponseCode() != 200) {
-                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-            }
-            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-            JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
+            mensajeInformacion("Factura creada", (String) jsonObject.get("mensaje"));
             connection.disconnect();
         }
     }

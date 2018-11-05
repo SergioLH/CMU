@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -17,6 +18,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+
+import static main.java.controlador.Herramientas.mensajeError;
+import static main.java.controlador.Herramientas.mensajeInformacion;
 
 @SuppressWarnings("ALL")
 public class ModificarFechaController {
@@ -47,8 +51,7 @@ public class ModificarFechaController {
                     Platform.runLater(() -> {
                         Scene escena = ventana.getScene();
                         FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation(MainApp.class.getResource("../vista/MenuEncargado.fxml"));
-
+                        loader.setLocation(MainApp.class.getResource("../vista/ModificarFecha.fxml"));
                         try {
                             escena.setRoot(loader.load());
                         } catch (Exception e) {
@@ -68,20 +71,27 @@ public class ModificarFechaController {
     private boolean confirmar() throws IOException {
         final String numeroTarjeta = campoTarjeta.getText();
         final LocalDate nuevaFecha = campoNuevaFecha.getValue();
-
         if (!(campoTarjeta.getText().isEmpty()) && !(campoNuevaFecha.getValue().isBefore(LocalDate.now()))) {
             URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/FechaModificada");
-            //URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io//tarjetas");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
-
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
             JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
             JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
+            mensajeInformacion((String) jsonObject.get("mensaje"), "Cambio realizado correctamente.");
             connection.disconnect();
             return true;
         } else {
@@ -89,13 +99,24 @@ public class ModificarFechaController {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
-
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
             JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
             JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
+            mensajeError((String) jsonObject.get("mensaje"),
+                    "Para poder modificar una fecha de caducidad de una tarjeta, " +
+                            "debes rellenar correctamente el formulario.");
             connection.disconnect();
             return false;
         }

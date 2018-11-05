@@ -7,6 +7,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -15,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static main.java.controlador.Herramientas.mensajeError;
+import static main.java.controlador.Herramientas.mensajeInformacion;
 
 @SuppressWarnings("ALL")
 public class EditarController {
@@ -92,6 +96,8 @@ public class EditarController {
             @Override
             protected Void call() throws Exception {
                 if (editar()) {
+                    mensajeInformacion("Usuario editado correctamente",
+                            "El usuario ha sido editado correctamente.");
                     Stage ventana = MainApp.primaryStage;
                     Platform.runLater(() -> {
                         Scene escena = ventana.getScene();
@@ -127,13 +133,23 @@ public class EditarController {
             if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
                     && !(campoApellidos.getText().isEmpty()) && !(campoTelefono.getText().isEmpty())
                     && !(campoDireccion.getText().isEmpty()) && !(campoTipoAlojamiento.getText().isEmpty())) {
-
                 URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/EditarCompleto");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Accept", "application/json");
 
                 if (connection.getResponseCode() != 200) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
+                    System.out.println("Error: HTTP codigo error: " + connection.getResponseCode());
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
@@ -142,18 +158,8 @@ public class EditarController {
                 connection.disconnect();
                 return true;
             } else {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
-
-                if (connection.getResponseCode() != 200) {
-                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-                }
-                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-                JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
-                connection.disconnect();
+                mensajeError("Error", "Error al editar, formulario incompleto.");
+                System.out.println("Error al editar, formulario incompleto.");
                 return false;
             }
         } else if (tipo.equals("Trabajador")) {
@@ -166,6 +172,17 @@ public class EditarController {
                 connection.setRequestProperty("Accept", "application/json");
 
                 if (connection.getResponseCode() != 200) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
+                    System.out.println("Error: HTTP codigo error: " + connection.getResponseCode());
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
@@ -174,22 +191,11 @@ public class EditarController {
                 connection.disconnect();
                 return true;
             } else {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
-
-                if (connection.getResponseCode() != 200) {
-                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-                }
-                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-                JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
-                connection.disconnect();
+                mensajeError("Error", "Error al editar, formulario incompleto.");
+                System.out.println("Error al editar, formulario incompleto.");
                 return false;
             }
         } else if (tipo.equals("Invitado")) {
-            System.out.println("prueba");
             if (!(campoDNI.getText().isEmpty()) && !(campoNombre.getText().isEmpty())
                     && !(campoApellidos.getText().isEmpty())) {
                 URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/EditarCompleto");
@@ -198,26 +204,28 @@ public class EditarController {
                 connection.setRequestProperty("Accept", "application/json");
 
                 if (connection.getResponseCode() != 200) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
+                    System.out.println("Error: HTTP codigo error: " + connection.getResponseCode());
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
                 JSONObject jsonObject = new JSONObject(jsonTokener);
                 System.out.println(jsonObject.get("mensaje"));
                 connection.disconnect();
+
                 return true;
             } else {
-                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Accept", "application/json");
-
-                if (connection.getResponseCode() != 200) {
-                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
-                }
-                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-                JSONObject jsonObject = new JSONObject(jsonTokener);
-                System.out.println(jsonObject.get("mensaje"));
-                connection.disconnect();
+                mensajeError("Error", "Error al editar, formulario incompleto.");
+                System.out.println("Error al editar, formulario incompleto.");
                 return false;
             }
         } else {

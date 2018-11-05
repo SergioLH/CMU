@@ -6,15 +6,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Habitacion {
-    private IntegerProperty id;
-    private StringProperty numeroTarjeta;
-    private StringProperty nombre;
-    private StringProperty apellidos;
-    private StringProperty piso;
-    private StringProperty numero;
+    private final IntegerProperty idHabitacion;
+    private final StringProperty numeroTarjeta;
+    private final StringProperty nombre;
+    private final StringProperty apellidos;
+    private final StringProperty piso;
+    private final StringProperty numero;
 
-    public Habitacion(int id, String numeroTarjeta, String nombre, String apellido, String piso, String numero) {
-        this.id = new SimpleIntegerProperty(id);
+    public Habitacion(int idHabitacion, String numeroTarjeta, String nombre, String apellido, String piso, String numero) {
+        this.idHabitacion = new SimpleIntegerProperty(idHabitacion);
         this.piso = new SimpleStringProperty(piso);
         this.numero = new SimpleStringProperty(numero);
         this.numeroTarjeta = new SimpleStringProperty(numeroTarjeta);
@@ -22,12 +22,12 @@ public class Habitacion {
         this.apellidos = new SimpleStringProperty(apellido);
     }
 
-    public int getId() {
-        return id.get();
+    public int getIdHabitacion() {
+        return idHabitacion.get();
     }
 
-    public IntegerProperty idProperty() {
-        return id;
+    public IntegerProperty idHabitacionProperty() {
+        return idHabitacion;
     }
 
     public String getPiso() {

@@ -121,11 +121,13 @@ public class MenuEncargadoController {
         connection.setRequestProperty("Accept", "application/json");
 
         if (connection.getResponseCode() != 200) {
+            System.out.println("Error: HTTP codigo error: " + connection.getResponseCode());
             throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
         }
         JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
         JSONObject jsonObject = new JSONObject(jsonTokener);
         JSONArray listaUsuarios = jsonObject.getJSONArray("usuarios");
+
         Iterator<Object> iterator = listaUsuarios.iterator();
         ObservableList<Usuario> usuarios = FXCollections.observableArrayList();
         while (iterator.hasNext()) {
@@ -207,6 +209,7 @@ public class MenuEncargadoController {
         connection.setRequestProperty("Accept", "application/json");
 
         if (connection.getResponseCode() != 200) {
+            System.out.println("Error: HTTP codigo error: " + connection.getResponseCode());
             throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
         }
         JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
@@ -290,6 +293,7 @@ public class MenuEncargadoController {
         connection.setRequestProperty("Accept", "application/json");
 
         if (connection.getResponseCode() != 200) {
+            System.out.println("Error: HTTP codigo error: " + connection.getResponseCode());
             throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
         }
         JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));

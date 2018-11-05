@@ -15,8 +15,8 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
 
+    private final static String Titulo = "CMU Pablo Serrano";
     public static Stage primaryStage;
-    private static String Titulo = "CMU Pablo Serrano";
 
     public static void main(String[] args) {
         launch(args);
@@ -37,7 +37,6 @@ public class MainApp extends Application {
         try {
             escena = new Scene(loader.load());
             escena.getStylesheets().add(getClass().getResource("../../resources/css/estilo.css").toExternalForm());
-            // escena.getStylesheets().add(getClass().getResource("../../resources/css/estilo.css").toString());
             MainApp.primaryStage.setScene(escena);
         } catch (Exception e) {
             e.printStackTrace();

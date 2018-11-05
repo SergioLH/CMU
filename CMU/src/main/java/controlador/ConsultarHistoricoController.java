@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -19,6 +20,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static main.java.controlador.Herramientas.mensajeError;
+import static main.java.controlador.Herramientas.mensajeInformacion;
 
 @SuppressWarnings("ALL")
 public class ConsultarHistoricoController {
@@ -41,10 +45,7 @@ public class ConsultarHistoricoController {
     @FXML
     TableColumn<Historico, String> columnaFecha;
 
-    private ObservableList<Historico> data = FXCollections.observableArrayList(
-          /*  new Historico("123456", "Gimmasio", "14/11/2017"),
-            new Historico("258963", "Comedor", "24/05/2018")*/
-    );
+    private ObservableList<Historico> data = FXCollections.observableArrayList();
 
     public void setData(ObservableList<Historico> data) {
         this.data = data;
@@ -84,26 +85,45 @@ public class ConsultarHistoricoController {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
-
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
             JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
             JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
+            mensajeInformacion("Fichero impreso", (String) jsonObject.get("mensaje"));
             connection.disconnect();
         } else {
             URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
-
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
             JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
             JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
+            mensajeError((String) jsonObject.get("mensaje") + " en la impresion",
+                    "Debes seleccionar un fichero para poder imprimirlo");
             connection.disconnect();
         }
     }

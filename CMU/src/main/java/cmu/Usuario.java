@@ -6,19 +6,19 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Usuario {
-    private IntegerProperty id;
-    private StringProperty dni;
-    private StringProperty nombre;
-    private StringProperty apellidos;
-    private StringProperty tipoAlojamiento;
-    private StringProperty tipoUsuario;
-    private StringProperty telefono;
-    private StringProperty direccion;
-    private StringProperty sueldo;
+    private final IntegerProperty idUsuario;
+    private final StringProperty dni;
+    private final StringProperty nombre;
+    private final StringProperty apellidos;
+    private final StringProperty tipoAlojamiento;
+    private final StringProperty tipoUsuario;
+    private final StringProperty telefono;
+    private final StringProperty direccion;
+    private final StringProperty sueldo;
 
-    public Usuario(int id, String dni, String nombre, String apellidos, String tipoAlojamiento, String tipoUsuario,
+    public Usuario(int idUsuario, String dni, String nombre, String apellidos, String tipoAlojamiento, String tipoUsuario,
                    String telefono, String direccion, String sueldo) {
-        this.id = new SimpleIntegerProperty(id);
+        this.idUsuario = new SimpleIntegerProperty(idUsuario);
         this.dni = new SimpleStringProperty(dni);
         this.nombre = new SimpleStringProperty(nombre);
         this.apellidos = new SimpleStringProperty(apellidos);
@@ -29,12 +29,12 @@ public class Usuario {
         this.sueldo = new SimpleStringProperty(sueldo);
     }
 
-    public int getId() {
-        return id.get();
+    public int getIdUsuario() {
+        return idUsuario.get();
     }
 
-    public IntegerProperty idProperty() {
-        return id;
+    public IntegerProperty idUsuarioProperty() {
+        return idUsuario;
     }
 
     public String getDni() {

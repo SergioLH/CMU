@@ -13,6 +13,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static main.java.controlador.Herramientas.mensajeError;
 
 /**
  * @author Seryak
@@ -79,16 +82,44 @@ public class LoginController {
             connection.setRequestProperty("Accept", "application/json");
 
             if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
                 throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
             }
-            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-            JSONObject jsonObject = new JSONObject(jsonTokener);
-            System.out.println(jsonObject.get("mensaje"));
-            connection.disconnect();
             return true;
 
         } else {
-            System.out.println("Error");
+            URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+            if (connection.getResponseCode() != 200) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error en la conexion");
+                    try {
+                        alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    alert.showAndWait();
+                });
+                throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+            }
+
+            JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+            JSONObject jsonObject = new JSONObject(jsonTokener);
+            mensajeError((String) jsonObject.get("mensaje"), "Error al logearse.\n" +
+                    "Para poder entrar debes rellenar los campos correctamente");
+            connection.disconnect();
             return false;
         }
     }

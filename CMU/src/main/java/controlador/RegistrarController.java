@@ -12,6 +12,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -20,6 +21,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static main.java.controlador.Herramientas.mensajeError;
+import static main.java.controlador.Herramientas.mensajeInformacion;
 
 /**
  * @author Seryak
@@ -100,6 +104,7 @@ public class RegistrarController {
             @Override
             protected Void call() throws Exception {
                 if (registrar()) {
+                    mensajeInformacion("Usuario Registrado.", "El usuario ha sido registrado correctamente.");
                     Stage ventana = MainApp.primaryStage;
                     Platform.runLater(() -> {
                         Scene escena = ventana.getScene();
@@ -140,20 +145,43 @@ public class RegistrarController {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Accept", "application/json");
-
-                if (connection.getResponseCode() == 201) {
-                    System.out.println("Registro Completo");
-                } else {
-                    System.out.println("Error en la conexion");
+                if (connection.getResponseCode() != 201) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
-
-                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
-                JSONObject jsonObject = new JSONObject(jsonTokener);
                 connection.disconnect();
                 return true;
             } else {
-                System.out.println("Error en la creacion");
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+                if (connection.getResponseCode() != 200) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                mensajeError((String) jsonObject.get("mensaje"), "Para registrar correctamente, completa el formulario.");
+                connection.disconnect();
                 return false;
             }
         } else if (tipo.equals("Trabajador")) {
@@ -165,10 +193,17 @@ public class RegistrarController {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Accept", "application/json");
 
-                if (connection.getResponseCode() == 201) {
-                    System.out.println("Registro Completo");
-                } else {
-                    System.out.println("Error en la conexion");
+                if (connection.getResponseCode() != 201) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
@@ -176,7 +211,28 @@ public class RegistrarController {
                 connection.disconnect();
                 return true;
             } else {
-                System.out.println("Error en la creacion");
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                mensajeError((String) jsonObject.get("mensaje"), "Para registrar correctamente, completa el formulario.");
+                connection.disconnect();
                 return false;
             }
         } else if (tipo.equals("Invitado")) {
@@ -187,10 +243,17 @@ public class RegistrarController {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Accept", "application/json");
 
-                if (connection.getResponseCode() == 201) {
-                    System.out.println("Registro Completo");
-                } else {
-                    System.out.println("Error en la conexion");
+                if (connection.getResponseCode() != 201) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
                     throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
                 }
                 JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
@@ -198,7 +261,28 @@ public class RegistrarController {
                 connection.disconnect();
                 return true;
             } else {
-                System.out.println("Error en la creacion");
+                URL url = new URL("http://5b04451e0f8d4c001440b0df.mockapi.io/MensajeError");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/json");
+
+                if (connection.getResponseCode() != 200) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error en la conexion");
+                        try {
+                            alert.setHeaderText("Error: HTTP codigo error: " + connection.getResponseCode());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        alert.showAndWait();
+                    });
+                    throw new RuntimeException("Error: HTTP codigo error: " + connection.getResponseCode());
+                }
+                JSONTokener jsonTokener = new JSONTokener(new InputStreamReader(connection.getInputStream()));
+                JSONObject jsonObject = new JSONObject(jsonTokener);
+                mensajeError((String) jsonObject.get("mensaje"), "Para registrar correctamente, completa el formulario.");
+                connection.disconnect();
                 return false;
             }
         } else {
