@@ -1,2 +1,2 @@
 # CMU
-Proyecto de la asignatura proyecto software
+Proyecto en lenguaje Java y JavaFX basado en la utilizacion del MVC (modelo vista controlador)
